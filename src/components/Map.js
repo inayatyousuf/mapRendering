@@ -10,6 +10,7 @@ mapboxgl.accessToken =
 
 const Map = () => {
   const mapContainerRef = useRef(null);
+  const [result, setResult] = useState([]);
 
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
@@ -106,10 +107,11 @@ const Map = () => {
   map.on('draw.create', updateArea);
   map.on('draw.delete', updateArea);
   map.on('draw.update', updateArea);
-
+  
+  
   function updateArea(e) {
     //data is geojson data containing object of FeatureCollection and array of coordinates
-      const data = draw.getAll();
+    const data = draw.getAll();
       const answer = document.getElementById('calculated-area');
       if (data.features.length > 0) {
           const area = turf.area(data);
@@ -121,11 +123,24 @@ const Map = () => {
           if (e.type !== 'draw.delete')
               alert('Click the map to draw a polygon.');
       }
+
+
+      localStorage.setItem('data', JSON.stringify(data));
+      const items = JSON.parse(localStorage.getItem('data'));
+     
+     if (items) {
+       setResult(items);
+         }
   }
 
-    // Clean up on unmount
-    return () => map.remove();
-  }, []); 
+  
+  // Clean up on unmount
+  return () => map.remove();
+  
+  
+}, []); 
+
+
 
   return (<div style={{display:"flex"}}>
       
@@ -140,6 +155,26 @@ const Map = () => {
           <p>Longitude: {lng}</p>
           <p>Latitude: {lat}</p>
         </div>
+        
+          { localStorage.getItem('data') &&
+             <div> 
+                 <p>{JSON.parse(localStorage.getItem('data')).features.map(item => (
+                    item.geometry.coordinates.map((cor,index) =>  (
+                      <div> Saved coordinates of shape
+                         {cor.map((i,index) => (
+                        <div key={index}>
+                        <ul>
+                          <li>{`${i[0]} , ${i[1]}` } </li><br />
+                        </ul>
+                      </div>
+                      ))}
+                      </div>
+                     ))
+                 ))}</p>
+
+             </div>
+          }
+         
       </div>
     </div>
   );
