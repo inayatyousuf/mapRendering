@@ -1,0 +1,13 @@
+.map-container {
+    width: 80vw;
+    height: 100vh;
+  }
+  
+  .sidebarStyle {
+    width: 20%;
+    background-color: #404040;
+    color: #ffffff;
+    z-index: 1 !important;
+    padding: 6px;
+    font-weight: bold;
+  }
