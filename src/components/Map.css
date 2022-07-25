@@ -4,10 +4,15 @@
   }
   
   .sidebarStyle {
-    width: 20%;
+    width: 30%;
     background-color: #404040;
     color: #ffffff;
     z-index: 1 !important;
     padding: 6px;
     font-weight: bold;
   }
+  .map-container {
+    height: 100vh;
+    width: 70vw;
+    }
+  
